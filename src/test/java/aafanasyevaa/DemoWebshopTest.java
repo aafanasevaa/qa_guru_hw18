@@ -24,7 +24,7 @@ public class DemoWebshopTest {
 
     @Test
     @Tag("API")
-    public void addToCompareListTest() {
+    public void clearCompareListTest() {
 
         step("Add cookie to browser", () -> {
             String authorizationCookie =
@@ -50,14 +50,21 @@ public class DemoWebshopTest {
                         .cookie("NOPCOMMERCE.AUTH")
                         .contentType("application/x-www-form-urlencoded; charset=UTF-8")
                         .when()
-                        .post("/compareproducts/add/17")
+                        .get("/compareproducts/add/17")
                         .then()
-                        .statusCode(302))
+                        .statusCode(200))
                 .extract().response();
 
-        step("Check the camera in the compare list", () -> {
+        step("Clear compare list", () ->
+                given()
+                        .when()
+                        .get("/clearcomparelist")
+                        .then()
+                        .statusCode(200));
+
+        step("Check that compare list is empty", () -> {
             open("/compareproducts");
-            $(".page-body").shouldHave(Condition.text("Digital SLR Camera 12.2 Mpixel"));
+            $(".page-body").shouldHave(Condition.text("You have no items to compare."));
         });
     }
 }
