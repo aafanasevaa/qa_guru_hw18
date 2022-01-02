@@ -56,7 +56,7 @@ public class DemoWebshopTest {
                 .extract().response();
 
         step("Check the camera in the compare list", () -> {
-            open("/compareproducts/add/17");
+            open("/compareproducts");
             $(".page-body").shouldHave(Condition.text("Digital SLR Camera 12.2 Mpixel"));
         });
     }
